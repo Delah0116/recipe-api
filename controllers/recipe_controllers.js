@@ -4,10 +4,10 @@ import { RecipeModel } from "../models/recipe.js";
 export const getRecipes = async (req, res, next) => {
   try {
     // Get query Params
-    const { limit, skip, search } = req.query;
+    const { limit, skip, filter } = req.query;
     // Get all recipes from database
     const allRecipes = await RecipeModel
-    .find({ name: search })
+    .find({ name: filter })
     .limit(limit)
     .skip(skip);
     // Return all recipes as response
