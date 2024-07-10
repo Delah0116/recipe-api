@@ -1,29 +1,43 @@
 import { Router } from "express";
-import { RecipeModel } from "../models/recipe.js";
 import { deletedRecipe, getRecipe, getRecipes, patchRecipe, postRecipes } from "../controllers/recipe_controllers.js";
 import { localUpload } from "../middlewares/uploads.js";
+import { checkUserSession } from "../middlewares/auth.js";
 
 
 // Create a Router
 const recipesRouter = Router();
 
-// Define routerimport
+
+// Define router
 recipesRouter.get('/recipes', getRecipes);
-
-// Add recipe
-recipesRouter.post('/recipes', localUpload.single('image'), postRecipes);
-
-//update patch 
-recipesRouter.patch('/recipes/:id', patchRecipe);
-
-// Delete
-recipesRouter.delete('/recipes/:id', deletedRecipe);
 
 // a method that will Get a single Recipe 
 recipesRouter.get('/recipes/:id', getRecipe);
+// Add recipe
+recipesRouter.post('/recipes', checkUserSession, localUpload.single('image'), postRecipes);
+
+//update patch 
+recipesRouter.patch('/recipes/:id', checkUserSession, patchRecipe);
+
+// Delete
+recipesRouter.delete('/recipes/:id', checkUserSession, deletedRecipe);
+
+
+// Export router
+export default recipesRouter;
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 // MJE3b9kD5J8YSxFl
 
-// Export router
-export default recipesRouter;
