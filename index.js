@@ -5,6 +5,7 @@ import session from "express-session";
 import recipesRouter from "./routes/recipe.js";
 import categoryRouter from "./routes/category.js";
 import userRouter from "./routes/user.js";
+import MongoStore from "connect-mongo";
 
 // Connect to DB
 await mongoose.connect(process.env.MONGO_URL);
@@ -24,10 +25,12 @@ app.use(express.static("uploads"));
 app.use(
   session({
     secret: process.env.SESSION_SECRET,
-    secret: "keyboard cat",
     resave: false,
     saveUninitialized: true,
-    cookie: { secure: true },
+    // cookie: { secure: true },
+    store: MongoStore.create({
+      mongoUrl: process.env.MONGO_URL,
+    }),
   })
 );
 
